@@ -9,7 +9,7 @@
     </div>
     <router-view/>
     <div class="footer">
-      <a href="">Github</a>
+      <a href="https://github.com/fairchildspencer/CS260/tree/master/wedding-site">Github</a>
     </div>
   </div>
 </template>
