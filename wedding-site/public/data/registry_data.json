@@ -1,0 +1,107 @@
+[
+    {
+        "item_name": "Knives",
+        "id": 1,
+        "price": 41.98,
+        "must-have": true,
+        "image": "knives.jpeg"
+    },
+    {
+        "item_name": "Blender",
+        "id": 2,
+        "price": 137.14,
+        "must-have": false,
+        "image": "blender.jpeg"
+    },
+    {
+        "item_name": "Couch",
+        "id": 3,
+        "price": 53.45,
+        "must-have": true,
+        "image": "couch.jpeg"
+    },
+    {
+        "item_name": "Sheets",
+        "id": 4,
+        "price": 121.36,
+        "must-have": true,
+        "image": "sheets.jpeg"
+    },
+    {
+        "item_name": "Silverware",
+        "id": 5,
+        "price": 87.32,
+        "must-have": false,
+        "image": "silverware.jpeg"
+    },
+    {
+        "item_name": "Table",
+        "id": 6,
+        "price": 89.55,
+        "must-have": false,
+        "image": "table.jpeg"
+    },
+    {
+        "item_name": "TV",
+        "id": 7,
+        "price": 181.75,
+        "must-have": false,
+        "image": "tv.jpeg"
+    },
+    {
+        "item_name": "Cutting Board",
+        "id": 8,
+        "price": 104.41,
+        "must-have": false,
+        "image": "cuttingboard.jpeg"
+    },
+    {
+        "item_name": "Nightstand",
+        "id": 9,
+        "price": 181.89,
+        "must-have": true,
+        "image": "nightstand.jpeg"
+    },
+    {
+        "item_name": "Mattress",
+        "id": 10,
+        "price": 142.13,
+        "must-have": true,
+        "image": "mattress.jpeg"
+    },
+    {
+        "item_name": "Lamp",
+        "id": 11,
+        "price": 51.15,
+        "must-have": true,
+        "image": "lamp.jpeg"
+    },
+    {
+        "item_name": "Tent",
+        "id": 12,
+        "price": 124.8,
+        "must-have": false,
+        "image": "tent.jpeg"
+    },
+    {
+        "item_name": "Bed frame",
+        "id": 13,
+        "price": 81.51,
+        "must-have": true,
+        "image": "bedframe.jpeg"
+    },
+    {
+        "item_name": "Chair",
+        "id": 14,
+        "price": 126.6,
+        "must-have": true,
+        "image": "chair.jpeg"
+    },
+    {
+        "item_name": "Hot Air Balloon",
+        "id": 15,
+        "price": 1200.31,
+        "must-have": true,
+        "image": "balloon.jpeg"
+    }
+]
