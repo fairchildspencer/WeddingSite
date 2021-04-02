@@ -18,7 +18,7 @@
 <style scoped>
 
     .masonry-wrapper {
-        column-count: 2;
+        column-count: 3;
         column-gap: 1rem;
         width: 100%;
     }

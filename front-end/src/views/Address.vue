@@ -34,7 +34,6 @@
             <p>{{ firstName }} {{ lastName }}</p>
             <p>{{addressOne}}, {{addressTwo}}</p>
             <p>{{city}}, {{state}} {{zipcode}}</p>
-            <button class="buttons" v-on:click="unSubmitForm">Change your address</button>
         </div>
 
     </div>
@@ -128,6 +127,7 @@
 </style>
 
 <script>
+    import axios from 'axios';
     export default {
         name: 'Address',
         data() {
@@ -144,29 +144,23 @@
             }
         },
         methods: {
-            submitForm: function() {
+            async submitForm() {
                 this.submitted = true;
-                this.$root.$data.addresses.push({
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    addressOne: this.addressOne,
-                    addressTwo: this.addressTwo,
-                    city: this.city,
-                    zipcode: this.zipcode
-                })
-            },
-
-            unSubmitForm: function() {
-                this.submitted = false;
-                let index = 0;
-                for (let i = 0; i < this.$root.$data.addresses.length; i++) {
-                    if (this.$root.$data.addresses[i].firstName === this.firstName) {
-                        index = i;
-                        break;
-                    }
+                try {
+                    await axios.post("/api/address", {
+                        firstName: this.firstName,
+                        lastName: this.lastName,
+                        addressOne: this.addressOne,
+                        addressTwo: this.addressTwo,
+                        city: this.city,
+                        zipcode: this.zipcode,
+                        plusOne: this.plusOne
+                    });
+                    await this.getAddresses();
+                } catch (error) {
+                    console.log(error);
                 }
-                this.$root.$data.addresses.splice(index,1);
-            }
+            },
         }
     }
 

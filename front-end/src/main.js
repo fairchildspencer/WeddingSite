@@ -6,7 +6,6 @@ import itemData from '../public/data/registry_data.json'
 let data = {
   items: itemData,
   reserved: [],
-  addresses: []
 }
 
 new Vue({
