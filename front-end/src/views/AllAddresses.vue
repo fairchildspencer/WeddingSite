@@ -1,14 +1,31 @@
 <template>
     <div class="wrapper">
-        <div v-if="isEmpty">
-            <div class="address-wrapper" v-for="address in addresses" :key="address.firstName">
-                <div class="address-item">
-                    <p>{{ address.firstName }} {{ address.lastName }}</p>
-                    <p>{{address.addressOne}}, {{address.addressTwo}}</p>
-                    <p>{{address.city}}, {{address.state}} {{address.zipcode}}</p>
-                    <button class="buttons" v-on:click="deleteAddress(address)">Delete</button>
-                </div>
+        <select class="selector" v-model="selectedGroup">
+                <option v-for="group in groups" :key="group.name">{{group.name}}</option>
+        </select>
+        <textarea v-model="newGroupName" class="text-area"></textarea>
+        <button class="buttons center-button" v-on:click="createGroup">Add group</button>
+        <button class="buttons center-button" v-on:click="deleteGroup">Delete group</button>
+        <div class="address-wrapper" v-for="address in currentAddresses" :key="address.firstName">
+            <div class="address-item">
+                <p>{{ address.firstName }} {{ address.lastName }}</p>
+                <p>{{address.addressOne}}, {{address.addressTwo}}</p>
+                <p>{{address.city}}, {{address.state}} {{address.zipcode}}</p>
+                <button class="buttons" v-on:click="deleteAddress(address)">Delete</button>
             </div>
+        </div>
+        <hr>
+        <div v-if="isEmpty">
+            <h2>Unassigned Addresses</h2>
+                <div class="address-wrapper" v-for="address in filteredAddresses" :key="address.firstName">
+                    <div class="address-item">
+                        <p>{{ address.firstName }} {{ address.lastName }}</p>
+                        <p>{{address.addressOne}}, {{address.addressTwo}}</p>
+                        <p>{{address.city}}, {{address.state}} {{address.zipcode}}</p>
+                        <button class="buttons" v-on:click="deleteAddress(address)">Delete</button>
+                        <button class="buttons group-button" v-on:click="groupAddress(address)">Add to current group</button>
+                    </div>
+                </div>
         </div>
         <div v-else>
             <h2>No addresses yet :(</h2>
@@ -17,6 +34,25 @@
 </template>
 
 <style scoped>
+    .group-button {
+        margin-left:1rem;
+    }
+    .text-area {
+        height: 1rem;
+        margin: 1rem;
+    }
+    .selector {
+        display: block;
+        margin: 0 auto;
+        margin-top: 2rem;
+    }
+
+    .center-button {
+        display: block;
+        margin: 0 auto;
+        width: 6rem;
+        height: 1.5rem;
+    }
 
     .address-item {
         border: 1px solid #2c3e50;
@@ -51,16 +87,35 @@
         name: "AllAddresses",
         data() {
             return {
-                addresses: []
+                addresses: [],
+                selectedGroup: null,
+                groups: [],
+                newGroupName: "New Group Name"
             }
         },
         created() {
             this.getAddresses();
+            this.getGroups();
         },
         computed: {
             isEmpty: function() {
                 if (this.addresses.length > 0) return true;
                 else return false;
+            },
+            filteredAddresses: function () {
+                return this.addresses.filter(item => item.group == null);
+            },
+            currentGroup: function() {
+                return this.groups.filter( group => group.name == this.selectedGroup );
+            },
+            currentAddresses: function() {
+                let groupID = "";
+                this.groups.forEach(group => {
+                    if (group.name == this.selectedGroup) {
+                        groupID = group._id;
+                    }
+                });
+                return this.addresses.filter(address => address.group == groupID);
             }
         },
         methods: {
@@ -81,7 +136,54 @@
                 } catch(error) {
                     console.log(error);
                 }
+            },
+
+            async createGroup() {
+                try {
+                    await axios.post("/api/group", {
+                        name: this.newGroupName
+                    });
+                    await this.getGroups();
+                } catch(error) {
+                    console.log("error");
+                }
+            },
+
+            async getGroups() {
+                try {
+                    const response = await axios.get("/api/groups");
+                    this.groups = response.data;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async groupAddress(address) {
+                if (this.currentGroup.length == 0) {
+                    return;
+                }
+                try {
+                    axios.put(`/api/groups/${this.currentGroup[0]._id}/addresses/${address._id}`);
+                    this.getGroups();
+                    this.getAddresses();
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            async deleteGroup() {
+                try {
+                    this.currentAddresses.forEach( address => {
+                        this.deleteAddress(address);
+                    });
+                    await axios.delete(`/api/group/${this.currentGroup[0]._id}`);
+                    await this.getGroups();
+                    await this.getAddresses();
+                } catch(error) {
+                    console.log(error);
+                }
             }
+
         }
     }
 

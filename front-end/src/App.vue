@@ -3,8 +3,6 @@
     <div id="nav">
       <h1 class="main-title">J+S</h1>
       <router-link to="/">Home</router-link> |
-      <router-link to="/registry">Registry</router-link> |
-      <router-link to="/reserved">Reserved</router-link> |
       <router-link to="/allAddresses">All Addresses</router-link>
     </div>
     <router-view/>

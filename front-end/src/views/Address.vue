@@ -140,12 +140,14 @@
                 state: "",
                 zipcode: "",
                 plusOne: false,
-                submitted: false
+                submitted: false,
+                groups: []
             }
         },
         methods: {
             async submitForm() {
                 this.submitted = true;
+                //let group = this.getCurrentGroup();
                 try {
                     await axios.post("/api/address", {
                         firstName: this.firstName,
@@ -154,13 +156,31 @@
                         addressTwo: this.addressTwo,
                         city: this.city,
                         zipcode: this.zipcode,
-                        plusOne: this.plusOne
+                        plusOne: this.plusOne,
+                        group: null
                     });
-                    await this.getAddresses();
                 } catch (error) {
                     console.log(error);
                 }
             },
+            getCurrentGroup() {
+                this.groups.forEach((item) => {
+                    if (item.name == "Unassigned group") {
+                        return item;
+                    }
+                });
+            },
+            async getGroups() {
+                try {
+                    const response = await axios.get("/api/groups");
+                    this.groups = response.data;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        },
+        created() {
+            this.getGroups();
         }
     }
 
