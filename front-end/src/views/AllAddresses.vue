@@ -124,7 +124,7 @@
                     const response = await axios.get("/api/addresses");
                     this.addresses = response.data;
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             },
 
@@ -134,7 +134,7 @@
                     await axios.delete(`/api/address/${address._id}`);
                     await this.getAddresses();
                 } catch(error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             },
 
@@ -145,7 +145,7 @@
                     });
                     await this.getGroups();
                 } catch(error) {
-                    console.log("error");
+                    //console.log(error);
                 }
             },
 
@@ -154,7 +154,7 @@
                     const response = await axios.get("/api/groups");
                     this.groups = response.data;
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             },
 
@@ -167,7 +167,7 @@
                     this.getGroups();
                     this.getAddresses();
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             },
 
@@ -180,7 +180,7 @@
                     await this.getGroups();
                     await this.getAddresses();
                 } catch(error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             }
 

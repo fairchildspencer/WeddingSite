@@ -50,7 +50,7 @@ app.post('/api/group', async (req, res) => {
     await group.save();
     res.send(group);
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res.sendStatus(500);
   }
 });
@@ -61,7 +61,7 @@ app.get('/api/groups', async (req, res) => {
     let groups = await Group.find();
     res.send(groups);
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res.sendStatus(500);
   }
 });
@@ -85,7 +85,7 @@ app.post('/api/address', async (req, res) => {
         await address.save();
         res.send(address);
       } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.sendStatus(500);
       }
     }
@@ -105,7 +105,7 @@ app.post('/api/address', async (req, res) => {
         await address.save();
         res.send(address);
       } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.sendStatus(500);
       }
     }
@@ -117,7 +117,7 @@ app.get('/api/addresses', async (req, res) => {
       let addresses = await Address.find();
       res.send(addresses);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       res.sendStatus(500);
     }
   });
@@ -133,7 +133,7 @@ app.delete('/api/address/:addressID', async (req, res) => {
         await address.delete();
         res.sendStatus(200);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.sendStatus(500);
     }
 });
@@ -155,7 +155,7 @@ app.put('/api/groups/:groupID/addresses/:addressID', async (req, res) => {
       await address.save();
       res.send(address);
   } catch (error) {
-      console.log(error);
+      //console.log(error);
       res.sendStatus(500);
   }
 });
@@ -171,7 +171,7 @@ app.delete('/api/group/:groupID', async (req, res) => {
       await group.delete();
       res.sendStatus(200);
   } catch (error) {
-      console.log(error);
+      //console.log(error);
       res.sendStatus(500);
   }
 });
