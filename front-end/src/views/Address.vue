@@ -147,7 +147,6 @@
         methods: {
             async submitForm() {
                 this.submitted = true;
-                //let group = this.getCurrentGroup();
                 try {
                     await axios.post("/api/address", {
                         firstName: this.firstName,
