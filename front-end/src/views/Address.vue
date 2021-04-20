@@ -25,7 +25,7 @@
                     <input type="checkbox" id="plusOne" name="plusOne" v-model="plusOne" class="checkbox-input">
                     <input type="submit" id="submit" name="submit" class="submitButton" v-on:click="submitForm">
                 </div>
-                <img src="/images/engagement.jpeg" class="form-image"/>
+                <img src="/images/engagement.jpg" class="form-image"/>
             </div>
         </div>
         <div v-else>

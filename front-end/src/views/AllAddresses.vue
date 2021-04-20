@@ -1,35 +1,7 @@
 <template>
     <div class="wrapper">
-        <select class="selector" v-model="selectedGroup">
-                <option v-for="group in groups" :key="group.name">{{group.name}}</option>
-        </select>
-        <textarea v-model="newGroupName" class="text-area"></textarea>
-        <button class="buttons center-button" v-on:click="createGroup">Add group</button>
-        <button class="buttons center-button" v-on:click="deleteGroup">Delete group</button>
-        <div class="address-wrapper" v-for="address in currentAddresses" :key="address.firstName">
-            <div class="address-item">
-                <p>{{ address.firstName }} {{ address.lastName }}</p>
-                <p>{{address.addressOne}}, {{address.addressTwo}}</p>
-                <p>{{address.city}}, {{address.state}} {{address.zipcode}}</p>
-                <button class="buttons" v-on:click="deleteAddress(address)">Delete</button>
-            </div>
-        </div>
-        <hr>
-        <div v-if="isEmpty">
-            <h2>Unassigned Addresses</h2>
-                <div class="address-wrapper" v-for="address in filteredAddresses" :key="address.firstName">
-                    <div class="address-item">
-                        <p>{{ address.firstName }} {{ address.lastName }}</p>
-                        <p>{{address.addressOne}}, {{address.addressTwo}}</p>
-                        <p>{{address.city}}, {{address.state}} {{address.zipcode}}</p>
-                        <button class="buttons" v-on:click="deleteAddress(address)">Delete</button>
-                        <button class="buttons group-button" v-on:click="groupAddress(address)">Add to current group</button>
-                    </div>
-                </div>
-        </div>
-        <div v-else>
-            <h2>No addresses yet :(</h2>
-        </div>
+        <AddressGroups v-if="user"/>
+        <Login v-else/>
     </div>
 </template>
 
@@ -83,106 +55,32 @@
 
 <script>
     import axios from 'axios';
+    import Login from '@/components/Login.vue';
+    import AddressGroups from '@/components/AddressGroups.vue';
     export default {
         name: "AllAddresses",
+        components: {
+            Login,
+            AddressGroups
+        },
         data() {
             return {
-                addresses: [],
-                selectedGroup: null,
-                groups: [],
-                newGroupName: "New Group Name"
             }
         },
-        created() {
-            this.getAddresses();
-            this.getGroups();
+        async created() {
+            try {
+                let response = await axios.get('/api/users');
+                this.$root.$data.user = response.data.user;
+            } catch (error) {
+                this.$root.$data.user = null;
+            }
         },
         computed: {
-            isEmpty: function() {
-                if (this.addresses.length > 0) return true;
-                else return false;
+            user() {
+                return this.$root.$data.user;
             },
-            filteredAddresses: function () {
-                return this.addresses.filter(item => item.group == null);
-            },
-            currentGroup: function() {
-                return this.groups.filter( group => group.name == this.selectedGroup );
-            },
-            currentAddresses: function() {
-                let groupID = "";
-                this.groups.forEach(group => {
-                    if (group.name == this.selectedGroup) {
-                        groupID = group._id;
-                    }
-                });
-                return this.addresses.filter(address => address.group == groupID);
-            }
         },
         methods: {
-            async getAddresses() {
-                try {
-                    const response = await axios.get("/api/addresses");
-                    this.addresses = response.data;
-                } catch (error) {
-                    //console.log(error);
-                }
-            },
-
-            async deleteAddress(address) {
-                try {
-                    //should delete all items belonging to address first
-                    await axios.delete(`/api/address/${address._id}`);
-                    await this.getAddresses();
-                } catch(error) {
-                    //console.log(error);
-                }
-            },
-
-            async createGroup() {
-                try {
-                    await axios.post("/api/group", {
-                        name: this.newGroupName
-                    });
-                    await this.getGroups();
-                } catch(error) {
-                    //console.log(error);
-                }
-            },
-
-            async getGroups() {
-                try {
-                    const response = await axios.get("/api/groups");
-                    this.groups = response.data;
-                } catch (error) {
-                    //console.log(error);
-                }
-            },
-
-            async groupAddress(address) {
-                if (this.currentGroup.length == 0) {
-                    return;
-                }
-                try {
-                    axios.put(`/api/groups/${this.currentGroup[0]._id}/addresses/${address._id}`);
-                    this.getGroups();
-                    this.getAddresses();
-                } catch (error) {
-                    //console.log(error);
-                }
-            },
-
-            async deleteGroup() {
-                try {
-                    this.currentAddresses.forEach( address => {
-                        this.deleteAddress(address);
-                    });
-                    await axios.delete(`/api/group/${this.currentGroup[0]._id}`);
-                    await this.getGroups();
-                    await this.getAddresses();
-                } catch(error) {
-                    //console.log(error);
-                }
-            }
 
         }
     }
